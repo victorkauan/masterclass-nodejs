@@ -19,6 +19,23 @@ async function addElementToApi(name, url) {
   if (res.message === 'OK') addElement(name, url)
 }
 
+async function removeElement(el) {
+  if (confirm('Are you sure you want to delete this URL?')) {
+    const li = el.parentNode
+    const a = li.querySelector('a')
+
+    const name = a.textContent
+    const url = a.href
+    const urlFormatted = url.slice(0, -1)
+
+    const res = await fetch(
+      `${API}?name=${name}&url=${urlFormatted}&del=1`
+    ).then((data) => data.json())
+
+    if (res.message === 'OK') li.remove()
+  }
+}
+
 load()
 
 function addElement(name, url) {
@@ -36,11 +53,6 @@ function addElement(name, url) {
   li.append(a)
   li.append(trash)
   ul.append(li)
-}
-
-function removeElement(el) {
-  if (confirm('Are you sure you want to delete this URL?'))
-    el.parentNode.remove()
 }
 
 form.addEventListener('submit', (event) => {
