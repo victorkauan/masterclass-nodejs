@@ -11,6 +11,10 @@
     {
       "name": "Discord",
       "url": "https://discord.com"
+    },
+    {
+      "name": "Netflix",
+      "url": "https://www.netflix.com"
     }
   ]
 }

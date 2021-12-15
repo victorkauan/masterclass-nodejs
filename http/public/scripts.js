@@ -2,16 +2,26 @@ const ul = document.querySelector('ul')
 const input = document.querySelector('input')
 const form = document.querySelector('form')
 
+const API = 'http://localhost:3334'
+
 async function load() {
-  const res = await fetch('http://localhost:3334').then((data) => data.json())
+  const res = await fetch(API).then((data) => data.json())
   res.urls.map(({ name, url }) => {
-    addElement({ name, url })
+    addElement(name, url)
   })
+}
+
+async function addElementToApi(name, url) {
+  const res = await fetch(`${API}?name=${name}&url=${url}`).then((data) =>
+    data.json()
+  )
+
+  if (res.message === 'OK') addElement(name, url)
 }
 
 load()
 
-function addElement({ name, url }) {
+function addElement(name, url) {
   const li = document.createElement('li')
   const a = document.createElement('a')
   const trash = document.createElement('span')
@@ -46,7 +56,7 @@ form.addEventListener('submit', (event) => {
 
   if (!/^http/.test(url)) return alert('Enter the URL correctly!')
 
-  addElement({ name, url })
+  addElementToApi(name, url)
 
   input.value = ''
 })
